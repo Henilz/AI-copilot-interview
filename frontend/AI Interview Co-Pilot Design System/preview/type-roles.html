@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type — Family & Numerics</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .blk{border:1px solid var(--outline-variant);border-radius:var(--r-card);padding:14px 16px;}
+  .lbl{font:var(--t-micro);color:var(--on-surface-subtle);letter-spacing:.06em;margin-bottom:8px;}
+  .glyphs{font-family:var(--font-sans);font-size:34px;letter-spacing:-.01em;color:var(--on-surface);line-height:1;}
+  .mono-glyphs{font-family:var(--font-mono);font-size:28px;color:var(--on-surface);font-variant-numeric:tabular-nums;line-height:1;}
+  .sub{font:var(--t-caption);color:var(--on-surface-variant);margin-top:8px;}
+  .weights{display:flex;gap:14px;margin-top:10px;}
+  .weights span{font-size:18px;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="blk">
+      <div class="lbl">SANS · Inter (Google Sans fallback)</div>
+      <div class="glyphs">Aa Gg Qq 0123456789</div>
+      <div class="weights">
+        <span style="font-weight:400">Regular</span>
+        <span style="font-weight:500">Medium</span>
+        <span style="font-weight:600">Semibold</span>
+        <span style="font-weight:700">Bold</span>
+      </div>
+      <div class="sub">Used for all UI. ⚠ Substituted from Google Sans (not freely licensed).</div>
+    </div>
+    <div class="blk">
+      <div class="lbl">MONO · Roboto Mono</div>
+      <div class="mono-glyphs">00:14:32 · 78/100</div>
+      <div class="sub">Reserved for the session timer and tabular numerics.</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Radii</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px 24px;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .box{width:64px;height:64px;background:var(--primary-light);border:1px solid var(--primary);box-sizing:border-box;}
+  .name{font:var(--t-caption);color:var(--on-surface);font-weight:500;}
+  .px{font:var(--t-micro);color:var(--on-surface-subtle);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="item"><div class="box" style="border-radius:4px"></div><div class="name">pip</div><div class="px">4 px</div></div>
+    <div class="item"><div class="box" style="border-radius:8px"></div><div class="name">input</div><div class="px">8 px</div></div>
+    <div class="item"><div class="box" style="border-radius:12px"></div><div class="name">card</div><div class="px">12 px</div></div>
+    <div class="item"><div class="box" style="border-radius:16px"></div><div class="name">chip</div><div class="px">16 px</div></div>
+    <div class="item"><div class="box" style="width:96px;height:40px;border-radius:24px"></div><div class="name">pill</div><div class="px">24 px</div></div>
+    <div class="item"><div class="box" style="border-radius:50%"></div><div class="name">circle</div><div class="px">50%</div></div>
+  </div>
+</body>
+</html>

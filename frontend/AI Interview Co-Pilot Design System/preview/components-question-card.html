@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Question Card</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+<style>
+  html,body{margin:0;background:var(--surface-variant);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .card{position:relative;background:var(--surface);border:1px solid var(--outline-variant);border-radius:var(--r-card);box-shadow:var(--elev-1);padding:14px 16px 12px 18px;overflow:hidden;}
+  .accent{position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;}
+  .top{display:flex;justify-content:space-between;align-items:center;}
+  .counter{font:var(--t-caption);color:var(--on-surface-variant);}
+  .badge{font:500 12px var(--font-sans);padding:4px 10px;border-radius:var(--r-chip);}
+  .qtext{font:var(--t-question);color:var(--on-surface);margin:8px 0 10px;text-wrap:pretty;}
+  .actions{display:flex;gap:4px;}
+  .ibtn{width:32px;height:32px;border-radius:50%;border:none;background:transparent;display:grid;place-items:center;cursor:pointer;}
+  .ibtn:hover{background:var(--surface-container);}
+  .ibtn .ms{font-family:'Material Symbols Outlined';font-size:20px;color:var(--on-surface-variant);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="accent" style="background:var(--difficulty-3)"></div>
+      <div class="top">
+        <span class="counter">Question 3 of 10</span>
+        <span class="badge" style="background:var(--warning-light);color:#9A6700;">Applied</span>
+      </div>
+      <p class="qtext">Describe a time you resolved a conflict within your team.</p>
+      <div class="actions">
+        <button class="ibtn"><span class="ms">refresh</span></button>
+        <button class="ibtn"><span class="ms">content_copy</span></button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="accent" style="background:var(--difficulty-5)"></div>
+      <div class="top">
+        <span class="counter">Question 7 of 10</span>
+        <span class="badge" style="background:var(--purple-light);color:var(--purple);">Expert</span>
+      </div>
+      <p class="qtext">Walk me through how you'd design a rate-limiter that survives a regional outage.</p>
+      <div class="actions">
+        <button class="ibtn"><span class="ms">refresh</span></button>
+        <button class="ibtn"><span class="ms">content_copy</span></button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

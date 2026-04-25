@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Colors — Difficulty Levels</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px 24px;}
+  .row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+  .lvl{border:1px solid var(--outline-variant);border-radius:10px;overflow:hidden;}
+  .bar{height:6px;}
+  .body{padding:10px 12px 12px;}
+  .num{font:var(--t-micro);color:var(--on-surface-subtle);letter-spacing:.06em;}
+  .name{font:var(--t-section-head);color:var(--on-surface);margin-top:2px;}
+  .hex{font:var(--t-caption);color:var(--on-surface-variant);font-variant-numeric:tabular-nums;margin-top:2px;}
+  .pip-row{display:flex;gap:6px;margin-top:10px;}
+  .pip{width:32px;height:8px;border-radius:var(--r-pip);background:var(--outline-variant);}
+  .pip.on{background:var(--c);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row">
+      <div class="lvl" style="--c:var(--difficulty-1)"><div class="bar" style="background:var(--c)"></div><div class="body"><div class="num">LEVEL 1</div><div class="name">Foundational</div><div class="hex">#3B82F6</div></div></div>
+      <div class="lvl" style="--c:var(--difficulty-2)"><div class="bar" style="background:var(--c)"></div><div class="body"><div class="num">LEVEL 2</div><div class="name">Intermediate</div><div class="hex">#10B981</div></div></div>
+      <div class="lvl" style="--c:var(--difficulty-3)"><div class="bar" style="background:var(--c)"></div><div class="body"><div class="num">LEVEL 3</div><div class="name">Applied</div><div class="hex">#F59E0B</div></div></div>
+      <div class="lvl" style="--c:var(--difficulty-4)"><div class="bar" style="background:var(--c)"></div><div class="body"><div class="num">LEVEL 4</div><div class="name">Advanced</div><div class="hex">#EF4444</div></div></div>
+      <div class="lvl" style="--c:var(--difficulty-5)"><div class="bar" style="background:var(--c)"></div><div class="body"><div class="num">LEVEL 5</div><div class="name">Expert</div><div class="hex">#7C3AED</div></div></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Spacing</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px 24px;display:flex;flex-direction:column;gap:10px;}
+  .row{display:grid;grid-template-columns:90px 1fr 70px;align-items:center;gap:14px;}
+  .name{font:var(--t-section-head);color:var(--on-surface);}
+  .px{font:var(--t-caption);color:var(--on-surface-variant);font-variant-numeric:tabular-nums;text-align:right;}
+  .bar{height:18px;background:var(--primary);border-radius:3px;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row"><span class="name">space-1</span><div class="bar" style="width:4px"></div><span class="px">4 px</span></div>
+    <div class="row"><span class="name">space-2</span><div class="bar" style="width:8px"></div><span class="px">8 px</span></div>
+    <div class="row"><span class="name">space-3</span><div class="bar" style="width:12px"></div><span class="px">12 px</span></div>
+    <div class="row"><span class="name">space-4</span><div class="bar" style="width:16px"></div><span class="px">16 px</span></div>
+    <div class="row"><span class="name">space-5</span><div class="bar" style="width:20px"></div><span class="px">20 px</span></div>
+    <div class="row"><span class="name">space-6</span><div class="bar" style="width:24px"></div><span class="px">24 px</span></div>
+    <div class="row"><span class="name">space-8</span><div class="bar" style="width:32px"></div><span class="px">32 px</span></div>
+  </div>
+</body>
+</html>

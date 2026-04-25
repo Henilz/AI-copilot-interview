@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AI Interview Co-Pilot — Side Panel Deck</title>
+<link rel="stylesheet" href="../ui_kits/side-panel/styles.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..40,400,0..1,0" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="deck-stage.js"></script>
+
+<style>
+  body{margin:0;background:#202124;font-family:'Inter',system-ui,sans-serif;}
+  deck-stage > section{
+    background:linear-gradient(180deg,#F8F9FA 0%,#E8EAED 100%);
+    display:grid;grid-template-columns:1fr 480px;
+    align-items:center;justify-items:center;
+    padding:60px 80px;gap:60px;
+  }
+  .slide-meta{display:flex;flex-direction:column;gap:18px;max-width:560px;justify-self:end;text-align:left;}
+  .slide-eyebrow{font:600 14px 'Inter',sans-serif;color:#1A73E8;letter-spacing:.12em;text-transform:uppercase;}
+  .slide-title{font:600 56px/1.05 'Inter',sans-serif;color:#202124;letter-spacing:-.02em;margin:0;}
+  .slide-desc{font:400 20px/1.5 'Inter',sans-serif;color:#5F6368;margin:0;text-wrap:pretty;}
+  .slide-bullets{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .slide-bullets li{display:flex;gap:12px;align-items:flex-start;font:400 16px/1.45 'Inter',sans-serif;color:#202124;}
+  .slide-bullets .ms{font-family:'Material Symbols Outlined';font-size:20px;color:#1A73E8;flex:0 0 20px;margin-top:2px;}
+  .slide-footer{position:absolute;left:80px;bottom:40px;display:flex;align-items:center;gap:12px;font:500 13px 'Inter',sans-serif;color:#5F6368;letter-spacing:.04em;text-transform:uppercase;}
+  .slide-footer .mark{width:24px;height:24px;border-radius:6px;background:#1A73E8;display:grid;place-items:center;color:#fff;}
+  .slide-footer .mark .ms{font-family:'Material Symbols Outlined';font-size:16px;}
+  .slide-num{position:absolute;right:80px;bottom:40px;font:600 13px 'Inter',sans-serif;color:#9AA0A6;letter-spacing:.08em;font-variant-numeric:tabular-nums;}
+  .panel-wrap{display:grid;place-items:center;justify-self:start;}
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- Slide 1 — Idle -->
+  <section data-screen-label="01 Idle / Upload">
+    <div class="panel-wrap" id="slot-idle"></div>
+    <div class="slide-meta">
+      <span class="slide-eyebrow">Screen 01 · State Machine</span>
+      <h1 class="slide-title">Idle &amp; Resume Upload</h1>
+      <p class="slide-desc">The starting surface. The interviewer drops a resume, the system parses it, and the panel waits politely for the Google Meet session.</p>
+      <ul class="slide-bullets">
+        <li><span class="ms">cloud_upload</span><span>Dashed drop zone supports drag-and-drop or click-to-browse for PDF/DOCX.</span></li>
+        <li><span class="ms">circle</span><span>Grey status dot signals "waiting" — green pulse appears once Meet is detected.</span></li>
+        <li><span class="ms">block</span><span>"Start Interview" stays disabled until both resume and Meet session are ready.</span></li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span class="mark"><span class="ms">smart_toy</span></span><span>AI Interview Co-Pilot · Design System</span></div>
+    <div class="slide-num">01 / 04</div>
+  </section>
+
+  <!-- Slide 2 — Live -->
+  <section data-screen-label="02 Live Interview">
+    <div class="panel-wrap" id="slot-live"></div>
+    <div class="slide-meta">
+      <span class="slide-eyebrow">Screen 02 · Primary Active State</span>
+      <h1 class="slide-title">Live Interview</h1>
+      <p class="slide-desc">The working surface. Question card, dynamic difficulty, audio capture, live transcript, and answer evaluation all on one scroll.</p>
+      <ul class="slide-bullets">
+        <li><span class="ms">graphic_eq</span><span>Header shows green pulse, session timer, and a blue waveform when audio is captured.</span></li>
+        <li><span class="ms">view_sidebar</span><span>Left-accent bar on the question card communicates difficulty at a glance.</span></li>
+        <li><span class="ms">donut_small</span><span>Circular score ring + evaluation tags appear after each answer is processed.</span></li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span class="mark"><span class="ms">smart_toy</span></span><span>AI Interview Co-Pilot · Design System</span></div>
+    <div class="slide-num">02 / 04</div>
+  </section>
+
+  <!-- Slide 3 — Loading -->
+  <section data-screen-label="03 Between Questions">
+    <div class="panel-wrap" id="slot-loading"></div>
+    <div class="slide-meta">
+      <span class="slide-eyebrow">Screen 03 · Transitional</span>
+      <h1 class="slide-title">Between Questions</h1>
+      <p class="slide-desc">A quiet pause while the AI generates the next question. The interviewer sees what just happened and what's coming.</p>
+      <ul class="slide-bullets">
+        <li><span class="ms">auto_awesome</span><span>Skeleton-shimmer placeholder + "Generating next question…" with animated dots.</span></li>
+        <li><span class="ms">check_circle</span><span>Last-answer chip surfaces the score so the interviewer keeps context.</span></li>
+        <li><span class="ms">trending_up</span><span>Toast announces difficulty changes — auto-dismisses in 3 seconds.</span></li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span class="mark"><span class="ms">smart_toy</span></span><span>AI Interview Co-Pilot · Design System</span></div>
+    <div class="slide-num">03 / 04</div>
+  </section>
+
+  <!-- Slide 4 — Complete -->
+  <section data-screen-label="04 Complete">
+    <div class="panel-wrap" id="slot-complete"></div>
+    <div class="slide-meta">
+      <span class="slide-eyebrow">Screen 04 · Terminal State</span>
+      <h1 class="slide-title">Session Complete</h1>
+      <p class="slide-desc">A celebratory recap with stats, performance breakdown, and the two paths forward — download the report, or start fresh.</p>
+      <ul class="slide-bullets">
+        <li><span class="ms">celebration</span><span>Subtle confetti burst behind a green check; the only "delight" moment in the system.</span></li>
+        <li><span class="ms">bar_chart</span><span>Three stat cards + four perf bars give a glanceable performance summary.</span></li>
+        <li><span class="ms">download</span><span>Primary action downloads a PDF report; secondary action restarts the flow.</span></li>
+      </ul>
+    </div>
+    <div class="slide-footer"><span class="mark"><span class="ms">smart_toy</span></span><span>AI Interview Co-Pilot · Design System</span></div>
+    <div class="slide-num">04 / 04</div>
+  </section>
+
+</deck-stage>
+
+<script type="text/babel" src="../ui_kits/side-panel/Header.jsx"></script>
+<script type="text/babel" src="../ui_kits/side-panel/UploadZone.jsx"></script>
+<script type="text/babel" src="../ui_kits/side-panel/QuestionCard.jsx"></script>
+<script type="text/babel" src="../ui_kits/side-panel/ScoreMeter.jsx"></script>
+<script type="text/babel" src="../ui_kits/side-panel/SummaryView.jsx"></script>
+<script type="text/babel" src="../ui_kits/side-panel/Panel.jsx"></script>
+
+<script type="text/babel">
+  function mount(id, scenario) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    ReactDOM.createRoot(el).render(<Panel scenario={scenario} />);
+  }
+  // Defer to ensure all helper components are registered on window
+  setTimeout(() => {
+    mount('slot-idle', 'idle');
+    mount('slot-live', 'interviewing');
+    mount('slot-loading', 'loading');
+    mount('slot-complete', 'complete');
+  }, 50);
+</script>
+
+</body>
+</html>

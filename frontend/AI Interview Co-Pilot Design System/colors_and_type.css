@@ -1,0 +1,102 @@
+/* AI Interview Co-Pilot — Foundations
+ * Color tokens, type scale, spacing, radii, elevation.
+ * Modeled on Material Design 3 with Google's surface palette.
+ */
+
+/* Google Sans → Product Sans is not freely licensed; we use Google's
+ * recommended fallback, with Inter as the closest open substitute, and
+ * system-ui after that. SUBSTITUTION FLAG: Google Sans is not bundled.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Primary ────────────────────────────────────────── */
+  --primary:        #1A73E8;
+  --primary-light:  #E8F0FE;
+  --primary-dark:   #1557B0;
+
+  /* ── Semantic ───────────────────────────────────────── */
+  --success:        #34A853;
+  --success-light:  #E6F4EA;
+  --warning:        #FBBC04;
+  --warning-light:  #FEF7E0;
+  --error:          #EA4335;
+  --error-light:    #FCE8E6;
+  --purple:         #7C3AED;
+  --purple-light:   #EDE9FE;
+
+  /* ── Neutral / Surface ──────────────────────────────── */
+  --surface:            #FFFFFF;
+  --surface-variant:    #F8F9FA;
+  --surface-container:  #F1F3F4;
+  --outline:            #DADCE0;
+  --outline-variant:    #E8EAED;
+
+  /* ── Text on surface ────────────────────────────────── */
+  --on-surface:          #202124;
+  --on-surface-variant:  #5F6368;
+  --on-surface-subtle:   #9AA0A6;
+
+  /* ── Difficulty levels ──────────────────────────────── */
+  --difficulty-1: #3B82F6;  /* Foundational  */
+  --difficulty-2: #10B981;  /* Intermediate  */
+  --difficulty-3: #F59E0B;  /* Applied       */
+  --difficulty-4: #EF4444;  /* Advanced      */
+  --difficulty-5: #7C3AED;  /* Expert        */
+
+  /* ── Type families ──────────────────────────────────── */
+  --font-sans: 'Google Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Google Sans Mono', 'Roboto Mono', ui-monospace, monospace;
+
+  /* ── Type scale (role → size / weight / line-height) ── */
+  --t-panel-title:    600 16px/24px var(--font-sans);
+  --t-section-head:   500 13px/20px var(--font-sans);
+  --t-question:       500 15px/22px var(--font-sans);
+  --t-body:           400 14px/20px var(--font-sans);
+  --t-caption:        400 12px/16px var(--font-sans);
+  --t-micro:          500 11px/14px var(--font-sans);
+  --t-score:          700 28px/32px var(--font-sans);
+  --t-timer:          500 13px/20px var(--font-mono);
+
+  /* ── Spacing (4-pt scale) ───────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* ── Radii ──────────────────────────────────────────── */
+  --r-pip:     4px;
+  --r-input:   8px;
+  --r-toast:   8px;
+  --r-card:    12px;
+  --r-chip:    16px;
+  --r-pill:    24px;
+  --r-circle:  50%;
+
+  /* ── Elevation ──────────────────────────────────────── */
+  --elev-0: none;
+  --elev-1: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  --elev-2: 0 2px 6px rgba(0,0,0,.15);
+  --elev-3: 0 4px 12px rgba(0,0,0,.15);
+
+  /* ── Motion ─────────────────────────────────────────── */
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --dur-fast:   150ms;
+  --dur-base:   200ms;
+  --dur-slow:   600ms;
+}
+
+/* ── Semantic element styles ─────────────────────────── */
+.h-panel,
+[data-role="panel-title"] { font: var(--t-panel-title);  color: var(--on-surface); letter-spacing: -.01em; }
+.h-section,
+[data-role="section"]     { font: var(--t-section-head); color: var(--on-surface-variant); text-transform: none; }
+.t-question               { font: var(--t-question);     color: var(--on-surface); }
+.t-body, p                { font: var(--t-body);         color: var(--on-surface); }
+.t-caption                { font: var(--t-caption);      color: var(--on-surface-variant); }
+.t-micro                  { font: var(--t-micro);        color: var(--on-surface-subtle); letter-spacing: .04em; }
+.t-score                  { font: var(--t-score);        color: var(--on-surface); font-variant-numeric: tabular-nums; }
+.t-timer                  { font: var(--t-timer);        color: var(--on-surface-variant); font-variant-numeric: tabular-nums; }
