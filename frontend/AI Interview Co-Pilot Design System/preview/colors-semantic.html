@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Colors — Semantic</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .pair{display:grid;grid-template-rows:48px 48px;border:1px solid var(--outline-variant);border-radius:10px;overflow:hidden;}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:0 10px;}
+  .row.solid{color:#fff;}
+  .label{font:var(--t-micro);letter-spacing:.04em;}
+  .label.dark{color:var(--on-surface-variant);}
+  .hex{font:var(--t-caption);font-variant-numeric:tabular-nums;}
+  .hex.dark{color:var(--on-surface-subtle);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="pair">
+      <div class="row solid" style="background:var(--success)"><span class="label">SUCCESS</span><span class="hex">#34A853</span></div>
+      <div class="row" style="background:var(--success-light)"><span class="label dark">success-light</span><span class="hex dark">#E6F4EA</span></div>
+    </div>
+    <div class="pair">
+      <div class="row solid" style="background:var(--warning);color:#202124"><span class="label" style="color:#202124">WARNING</span><span class="hex">#FBBC04</span></div>
+      <div class="row" style="background:var(--warning-light)"><span class="label dark">warning-light</span><span class="hex dark">#FEF7E0</span></div>
+    </div>
+    <div class="pair">
+      <div class="row solid" style="background:var(--error)"><span class="label">ERROR</span><span class="hex">#EA4335</span></div>
+      <div class="row" style="background:var(--error-light)"><span class="label dark">error-light</span><span class="hex dark">#FCE8E6</span></div>
+    </div>
+    <div class="pair">
+      <div class="row solid" style="background:var(--purple)"><span class="label">PURPLE</span><span class="hex">#7C3AED</span></div>
+      <div class="row" style="background:var(--purple-light)"><span class="label dark">purple-light</span><span class="hex dark">#EDE9FE</span></div>
+    </div>
+  </div>
+</body>
+</html>

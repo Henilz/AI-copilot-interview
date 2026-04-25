@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Score Meter</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;justify-items:center;}
+  .meter{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .ring{position:relative;width:84px;height:84px;}
+  svg{transform:rotate(-90deg);}
+  .track{stroke:var(--outline-variant);}
+  .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .n{font:700 24px/1 var(--font-sans);font-variant-numeric:tabular-nums;}
+  .n small{font:400 11px var(--font-sans);color:var(--on-surface-variant);margin-left:1px;}
+  .lab{font:500 12px var(--font-sans);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meter">
+      <div class="ring">
+        <svg width="84" height="84" viewBox="0 0 84 84">
+          <circle class="track" cx="42" cy="42" r="38" fill="none" stroke-width="4"/>
+          <circle cx="42" cy="42" r="38" fill="none" stroke-width="4" stroke="#34A853" stroke-linecap="round" stroke-dasharray="238.76" stroke-dashoffset="47.75"/>
+        </svg>
+        <div class="num"><span class="n">82<small>/100</small></span></div>
+      </div>
+      <span class="lab" style="color:var(--success)">Excellent</span>
+    </div>
+    <div class="meter">
+      <div class="ring">
+        <svg width="84" height="84" viewBox="0 0 84 84">
+          <circle class="track" cx="42" cy="42" r="38" fill="none" stroke-width="4"/>
+          <circle cx="42" cy="42" r="38" fill="none" stroke-width="4" stroke="#FBBC04" stroke-linecap="round" stroke-dasharray="238.76" stroke-dashoffset="86"/>
+        </svg>
+        <div class="num"><span class="n">68<small>/100</small></span></div>
+      </div>
+      <span class="lab" style="color:#9A6700">Good</span>
+    </div>
+    <div class="meter">
+      <div class="ring">
+        <svg width="84" height="84" viewBox="0 0 84 84">
+          <circle class="track" cx="42" cy="42" r="38" fill="none" stroke-width="4"/>
+          <circle cx="42" cy="42" r="38" fill="none" stroke-width="4" stroke="#EA4335" stroke-linecap="round" stroke-dasharray="238.76" stroke-dashoffset="143"/>
+        </svg>
+        <div class="num"><span class="n">42<small>/100</small></span></div>
+      </div>
+      <span class="lab" style="color:var(--error)">Needs Work</span>
+    </div>
+  </div>
+</body>
+</html>

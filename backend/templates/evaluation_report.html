@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interview Evaluation Report</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; color: #1a1a2e; line-height: 1.5; }
+
+    /* Header */
+    .header { background: #1a1a2e; color: white; padding: 32px 48px 24px; }
+    .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+    .header .subtitle { font-size: 13px; color: #a0aec0; margin-top: 4px; }
+    .meta-row { display: flex; gap: 32px; margin-top: 20px; }
+    .meta-item label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #718096; }
+    .meta-item span { font-size: 14px; font-weight: 600; color: #e2e8f0; }
+
+    /* Recommendation banner */
+    .recommendation { margin: 24px 48px; border-radius: 8px; padding: 20px 28px; display: flex; align-items: center; gap: 20px; }
+    .recommendation.hire { background: #f0fff4; border-left: 5px solid #38a169; }
+    .recommendation.no_hire { background: #fff5f5; border-left: 5px solid #e53e3e; }
+    .recommendation.maybe { background: #fffbeb; border-left: 5px solid #d69e2e; }
+    .recommendation .badge { font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+    .recommendation.hire .badge { color: #276749; }
+    .recommendation.no_hire .badge { color: #c53030; }
+    .recommendation.maybe .badge { color: #b7791f; }
+    .recommendation .reason { font-size: 13px; color: #4a5568; }
+
+    /* Sections */
+    .section { margin: 0 48px 28px; }
+    .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #718096; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 14px; }
+
+    /* Score card */
+    .score-card { display: inline-flex; align-items: center; gap: 12px; background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 20px; }
+    .score-value { font-size: 32px; font-weight: 800; color: #2d3748; }
+    .score-label { font-size: 11px; color: #718096; }
+    .score-note { font-size: 12px; color: #4a5568; margin-top: 8px; }
+
+    /* Strengths / Weaknesses */
+    .sw-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .sw-item { background: #f7fafc; border-radius: 6px; padding: 12px 16px; }
+    .sw-item .area { font-weight: 700; font-size: 13px; color: #2d3748; }
+    .sw-item .description { font-size: 12px; color: #4a5568; margin-top: 3px; }
+    .sw-item .citation { font-size: 11px; color: #718096; font-style: italic; margin-top: 4px; border-left: 3px solid #cbd5e0; padding-left: 8px; }
+
+    /* Skill matrix */
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { text-align: left; padding: 8px 12px; background: #f7fafc; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #718096; border-bottom: 2px solid #e2e8f0; }
+    td { padding: 9px 12px; border-bottom: 1px solid #edf2f7; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .badge-demo { background: #c6f6d5; color: #276749; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; }
+    .badge-partial { background: #feebc8; color: #7b341e; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; }
+    .badge-not-shown { background: #fed7d7; color: #c53030; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; }
+
+    /* Red flags */
+    .red-flags { list-style: none; }
+    .red-flags li { padding: 8px 14px; background: #fff5f5; border-left: 3px solid #fc8181; border-radius: 0 6px 6px 0; margin-bottom: 6px; font-size: 12px; color: #742a2a; }
+
+    /* Q&A review */
+    .qa-item { margin-bottom: 14px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+    .qa-question { background: #f7fafc; padding: 10px 16px; font-weight: 600; font-size: 12px; color: #2d3748; }
+    .qa-body { padding: 10px 16px; }
+    .qa-assessment { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; margin-bottom: 6px; }
+    .assessment-strong { background: #c6f6d5; color: #276749; }
+    .assessment-adequate { background: #bee3f8; color: #2a4365; }
+    .assessment-weak { background: #fed7d7; color: #c53030; }
+    .qa-summary { font-size: 12px; color: #4a5568; }
+    .qa-notes { font-size: 11px; color: #718096; font-style: italic; margin-top: 4px; }
+
+    /* Next steps */
+    .next-steps { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .next-steps li { padding: 8px 14px; background: #ebf8ff; border-left: 3px solid #63b3ed; border-radius: 0 6px 6px 0; font-size: 12px; color: #2c5282; }
+
+    /* Footer */
+    .footer { margin: 32px 48px 0; padding: 16px 0; border-top: 1px solid #e2e8f0; font-size: 10px; color: #a0aec0; text-align: center; }
+
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────────────────────── -->
+<div class="header">
+  <h1>Interview Evaluation Report</h1>
+  <div class="subtitle">AI Copilot — Confidential</div>
+  <div class="meta-row">
+    <div class="meta-item">
+      <label>Candidate</label>
+      <span>{{ interview.candidate_name }}</span>
+    </div>
+    <div class="meta-item">
+      <label>Position</label>
+      <span>{{ interview.job_role }}</span>
+    </div>
+    <div class="meta-item">
+      <label>Interview Date</label>
+      <span>{{ interview.date }}</span>
+    </div>
+    <div class="meta-item">
+      <label>Interview ID</label>
+      <span>#{{ interview.id[:8] }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── RECOMMENDATION ─────────────────────────────────────────────────────── -->
+<div class="recommendation {{ eval.overall_recommendation }}">
+  <div>
+    <div class="badge">
+      {% if eval.overall_recommendation == 'hire' %}Recommend Hire
+      {% elif eval.overall_recommendation == 'no_hire' %}Do Not Hire
+      {% else %}Further Evaluation Needed{% endif %}
+    </div>
+    <div class="reason">{{ eval.recommendation_reason }}</div>
+  </div>
+</div>
+
+<!-- ── COMMUNICATION SCORE ────────────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Communication Score</div>
+  <div class="score-card">
+    <div class="score-value">{{ eval.communication_score }}<span style="font-size:18px; color:#a0aec0;">/10</span></div>
+    <div class="score-label">Communication<br/>& Clarity</div>
+  </div>
+  {% if eval.communication_notes %}
+  <div class="score-note">{{ eval.communication_notes }}</div>
+  {% endif %}
+</div>
+
+<!-- ── SKILL MATRIX ───────────────────────────────────────────────────────── -->
+{% if eval.skill_matrix %}
+<div class="section">
+  <div class="section-title">Skill Matrix</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Skill</th>
+        <th>Claimed</th>
+        <th>Demonstrated</th>
+        <th>Evidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in eval.skill_matrix %}
+      <tr>
+        <td style="font-weight: 600;">{{ item.skill }}</td>
+        <td>{{ 'Yes' if item.claimed else 'No' }}</td>
+        <td>
+          {% if item.demonstrated == 'demonstrated' %}
+            <span class="badge-demo">Demonstrated</span>
+          {% elif item.demonstrated == 'partial' %}
+            <span class="badge-partial">Partial</span>
+          {% else %}
+            <span class="badge-not-shown">Not Shown</span>
+          {% endif %}
+        </td>
+        <td style="color:#4a5568;">{{ item.evidence or '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<!-- ── STRENGTHS ──────────────────────────────────────────────────────────── -->
+{% if eval.strengths %}
+<div class="section">
+  <div class="section-title">Strengths</div>
+  <ul class="sw-list">
+    {% for item in eval.strengths %}
+    <li class="sw-item">
+      <div class="area">{{ item.area }}</div>
+      <div class="description">{{ item.description }}</div>
+      {% if item.transcript_citation %}
+      <div class="citation">"{{ item.transcript_citation }}"</div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- ── WEAKNESSES ─────────────────────────────────────────────────────────── -->
+{% if eval.weaknesses %}
+<div class="section">
+  <div class="section-title">Weaknesses / Concerns</div>
+  <ul class="sw-list">
+    {% for item in eval.weaknesses %}
+    <li class="sw-item">
+      <div class="area">{{ item.area }}</div>
+      <div class="description">{{ item.description }}</div>
+      {% if item.transcript_citation %}
+      <div class="citation">"{{ item.transcript_citation }}"</div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- ── RED FLAGS ──────────────────────────────────────────────────────────── -->
+{% if eval.red_flags %}
+<div class="section">
+  <div class="section-title">Red Flags</div>
+  <ul class="red-flags">
+    {% for flag in eval.red_flags %}
+    <li>{{ flag }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- ── Q&A REVIEW ─────────────────────────────────────────────────────────── -->
+{% if eval.qa_review %}
+<div class="section">
+  <div class="section-title">Question-by-Question Review</div>
+  {% for item in eval.qa_review %}
+  <div class="qa-item">
+    <div class="qa-question">{{ item.question }}</div>
+    <div class="qa-body">
+      <span class="qa-assessment assessment-{{ item.assessment }}">{{ item.assessment | capitalize }}</span>
+      <div class="qa-summary">{{ item.candidate_response_summary }}</div>
+      {% if item.notes %}
+      <div class="qa-notes">{{ item.notes }}</div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- ── NEXT ROUND FOCUS ───────────────────────────────────────────────────── -->
+{% if eval.suggested_next_round_focus %}
+<div class="section">
+  <div class="section-title">Suggested Focus for Next Round</div>
+  <ul class="next-steps">
+    {% for item in eval.suggested_next_round_focus %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────── -->
+<div class="footer">
+  Generated by AI Interview Copilot &bull; This report is confidential and intended for internal hiring use only.
+</div>
+
+</body>
+</html>

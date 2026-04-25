@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Motion</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:18px 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .demo{border:1px solid var(--outline-variant);border-radius:var(--r-card);padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;min-height:120px;}
+  .name{font:var(--t-section-head);color:var(--on-surface);}
+  .meta{font:var(--t-caption);color:var(--on-surface-variant);text-align:center;}
+
+  .dot{width:14px;height:14px;border-radius:50%;background:var(--success);animation:pulse 2s infinite var(--ease-out);}
+  @keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(52,168,83,.5)}50%{transform:scale(1.3);box-shadow:0 0 0 8px rgba(52,168,83,0)}}
+
+  .cursor{display:inline-block;width:2px;height:18px;background:var(--primary);animation:blink 1s steps(2,end) infinite;}
+  @keyframes blink{50%{opacity:0}}
+  .line{font:var(--t-body);color:var(--on-surface);}
+
+  .wave{display:flex;align-items:center;gap:3px;height:24px;}
+  .wave span{width:3px;background:var(--error);border-radius:2px;animation:bounce .9s infinite var(--ease-out);}
+  .wave span:nth-child(1){animation-delay:0s;height:40%}
+  .wave span:nth-child(2){animation-delay:.15s;height:80%}
+  .wave span:nth-child(3){animation-delay:.3s;height:60%}
+  .wave span:nth-child(4){animation-delay:.45s;height:90%}
+  @keyframes bounce{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="demo">
+      <div class="dot"></div>
+      <div class="name">Status pulse</div>
+      <div class="meta">scale 1→1.3 · 2s loop</div>
+    </div>
+    <div class="demo">
+      <div class="line">listening<span class="cursor"></span></div>
+      <div class="name">Cursor blink</div>
+      <div class="meta">1s steps</div>
+    </div>
+    <div class="demo">
+      <div class="wave"><span></span><span></span><span></span><span></span></div>
+      <div class="name">Audio waveform</div>
+      <div class="meta">staggered 0.3–0.8s</div>
+    </div>
+  </div>
+</body>
+</html>

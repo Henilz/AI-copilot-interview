@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Colors — Neutral</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:18px 24px;display:flex;flex-direction:column;gap:6px;}
+  .row{display:grid;grid-template-columns:32px 1fr 130px 1fr;align-items:center;gap:14px;padding:6px 0;}
+  .sw{width:32px;height:32px;border-radius:8px;border:1px solid var(--outline-variant);}
+  .name{font:var(--t-section-head);color:var(--on-surface);}
+  .hex{font:var(--t-caption);color:var(--on-surface-variant);font-variant-numeric:tabular-nums;text-align:right;}
+  .use{font:var(--t-caption);color:var(--on-surface-subtle);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row"><div class="sw" style="background:var(--surface)"></div><span class="name">surface</span><span class="hex">#FFFFFF</span><span class="use">Panel & card bg</span></div>
+    <div class="row"><div class="sw" style="background:var(--surface-variant)"></div><span class="name">surface-variant</span><span class="hex">#F8F9FA</span><span class="use">Inputs, recessed sections</span></div>
+    <div class="row"><div class="sw" style="background:var(--surface-container)"></div><span class="name">surface-container</span><span class="hex">#F1F3F4</span><span class="use">Transcript, tag containers</span></div>
+    <div class="row"><div class="sw" style="background:var(--outline)"></div><span class="name">outline</span><span class="hex">#DADCE0</span><span class="use">Borders, inactive pips</span></div>
+    <div class="row"><div class="sw" style="background:var(--outline-variant)"></div><span class="name">outline-variant</span><span class="hex">#E8EAED</span><span class="use">Subtle separators</span></div>
+    <div class="row"><div class="sw" style="background:var(--on-surface)"></div><span class="name">on-surface</span><span class="hex">#202124</span><span class="use">Primary text</span></div>
+    <div class="row"><div class="sw" style="background:var(--on-surface-variant)"></div><span class="name">on-surface-variant</span><span class="hex">#5F6368</span><span class="use">Secondary text</span></div>
+    <div class="row"><div class="sw" style="background:var(--on-surface-subtle)"></div><span class="name">on-surface-subtle</span><span class="hex">#9AA0A6</span><span class="use">Placeholder, disabled</span></div>
+  </div>
+</body>
+</html>

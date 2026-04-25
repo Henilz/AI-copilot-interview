@@ -1,0 +1,49 @@
+# Web framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.34.0
+python-multipart>=0.0.20
+
+# Database
+sqlalchemy>=2.0.0
+asyncpg>=0.30.0
+psycopg2-binary>=2.9.0
+alembic>=1.15.0
+
+# Redis
+redis>=5.2.0
+
+# Task queue
+celery>=5.4.0
+
+# OpenAI
+openai>=1.75.0
+
+# Resume parsing
+pdfplumber>=0.11.0
+python-docx>=1.1.0
+pytesseract>=0.3.13
+Pillow>=11.0.0
+
+# Auth
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# Validation & settings
+pydantic>=2.11.0
+pydantic-settings>=2.8.0
+
+# Retry logic
+tenacity>=9.0.0
+
+# AWS S3
+boto3>=1.37.0
+
+# PDF generation
+jinja2>=3.1.0
+weasyprint>=62.0
+
+# Environment
+python-dotenv>=1.0.0
+
+# Token counting
+tiktoken>=0.9.0

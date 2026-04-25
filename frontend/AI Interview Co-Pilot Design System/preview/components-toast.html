@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Toasts</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+<style>
+  html,body{margin:0;background:var(--surface-variant);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px;display:flex;flex-direction:column;gap:10px;}
+  .toast{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:var(--r-toast);box-shadow:var(--elev-3);font:13px var(--font-sans);}
+  .ms{font-family:'Material Symbols Outlined';font-size:18px;}
+  .info{background:var(--primary-light);color:var(--primary-dark);}
+  .info .ms{color:var(--primary);}
+  .ok{background:var(--success-light);color:#137333;}
+  .ok .ms{color:var(--success);}
+  .err{background:var(--error-light);color:#A50E0E;}
+  .err .ms{color:var(--error);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="toast info"><span class="ms">trending_up</span><span>Difficulty increased to Hard 🔥</span></div>
+    <div class="toast ok"><span class="ms">check_circle</span><span>Resume parsed — 12 skills detected</span></div>
+    <div class="toast err"><span class="ms">error</span><span>Couldn't reach Google Meet — retrying</span></div>
+  </div>
+</body>
+</html>

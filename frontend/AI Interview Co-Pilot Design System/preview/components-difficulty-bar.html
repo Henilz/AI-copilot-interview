@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Difficulty Tracker</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:20px 24px;display:flex;flex-direction:column;gap:18px;}
+  .bar{display:flex;flex-direction:column;gap:8px;}
+  .head{display:flex;justify-content:space-between;align-items:center;}
+  .ttl{font:var(--t-caption);color:var(--on-surface-variant);}
+  .lvlname{font:600 12px var(--font-sans);}
+  .pips{display:flex;gap:6px;}
+  .pip{flex:1;height:8px;border-radius:var(--r-pip);background:var(--outline-variant);transition:transform var(--dur-fast) var(--ease-out);}
+  .pip.on{background:var(--c);}
+  .pip.cur{transform:scaleY(1.4);box-shadow:0 0 0 3px color-mix(in oklch,var(--c) 25%,transparent);}
+  .legend{display:flex;justify-content:space-between;font:var(--t-micro);color:var(--on-surface-subtle);letter-spacing:0;text-transform:none;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="bar" style="--c:var(--difficulty-2)">
+      <div class="head"><span class="ttl">Dynamic Difficulty</span><span class="lvlname" style="color:var(--c)">Intermediate</span></div>
+      <div class="pips">
+        <div class="pip on" style="background:var(--c)"></div>
+        <div class="pip on cur" style="background:var(--c)"></div>
+        <div class="pip"></div>
+        <div class="pip"></div>
+        <div class="pip"></div>
+      </div>
+      <div class="legend"><span>Foundational</span><span>Intermediate</span><span>Applied</span><span>Advanced</span><span>Expert</span></div>
+    </div>
+    <div class="bar" style="--c:var(--difficulty-4)">
+      <div class="head"><span class="ttl">Dynamic Difficulty</span><span class="lvlname" style="color:var(--c)">Advanced</span></div>
+      <div class="pips">
+        <div class="pip on" style="background:var(--c)"></div>
+        <div class="pip on" style="background:var(--c)"></div>
+        <div class="pip on" style="background:var(--c)"></div>
+        <div class="pip on cur" style="background:var(--c)"></div>
+        <div class="pip"></div>
+      </div>
+      <div class="legend"><span>Foundational</span><span>Intermediate</span><span>Applied</span><span>Advanced</span><span>Expert</span></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Elevation</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface-variant);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:28px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .item{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .box{width:120px;height:72px;background:var(--surface);border:1px solid var(--outline-variant);border-radius:var(--r-card);}
+  .name{font:var(--t-section-head);color:var(--on-surface);}
+  .use{font:var(--t-caption);color:var(--on-surface-variant);text-align:center;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="item"><div class="box" style="box-shadow:none"></div><div class="name">elev-0</div><div class="use">Flat sections</div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--elev-1)"></div><div class="name">elev-1</div><div class="use">Cards · question</div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--elev-2)"></div><div class="name">elev-2</div><div class="use">Active · hover</div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--elev-3)"></div><div class="name">elev-3</div><div class="use">Toasts · overlays</div></div>
+  </div>
+</body>
+</html>

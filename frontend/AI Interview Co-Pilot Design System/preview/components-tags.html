@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Evaluation Tags</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:24px;display:flex;flex-direction:column;gap:14px;}
+  .row{display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{font:500 12px var(--font-sans);padding:6px 12px;border-radius:var(--r-chip);display:inline-flex;align-items:center;gap:6px;}
+  .pos{background:var(--success-light);color:#137333;}
+  .warn{background:var(--warning-light);color:#9A6700;}
+  .neg{background:var(--error-light);color:#A50E0E;}
+  .info{background:var(--primary-light);color:var(--primary-dark);}
+  .lbl{font:var(--t-micro);color:var(--on-surface-subtle);letter-spacing:.06em;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div>
+      <div class="lbl" style="margin-bottom:6px;">EVALUATION TAGS</div>
+      <div class="row">
+        <span class="tag pos">✅ Structured</span>
+        <span class="tag pos">✅ Specific</span>
+        <span class="tag warn">⚠️ Needs more depth</span>
+        <span class="tag neg">✗ Off-topic</span>
+      </div>
+    </div>
+    <div>
+      <div class="lbl" style="margin-bottom:6px;">DIFFICULTY BADGES</div>
+      <div class="row">
+        <span class="tag info" style="background:#DBEAFE;color:#1E40AF">Foundational</span>
+        <span class="tag" style="background:#D1FAE5;color:#065F46">Intermediate</span>
+        <span class="tag warn">Applied</span>
+        <span class="tag neg">Advanced</span>
+        <span class="tag" style="background:var(--purple-light);color:var(--purple)">Expert</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

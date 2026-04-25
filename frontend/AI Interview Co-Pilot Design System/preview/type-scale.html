@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type — Scale</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html,body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface);}
+  .wrap{padding:18px 24px;display:flex;flex-direction:column;gap:10px;}
+  .row{display:grid;grid-template-columns:90px 1fr 110px;align-items:baseline;gap:18px;border-bottom:1px solid var(--outline-variant);padding-bottom:10px;}
+  .row:last-child{border-bottom:0;}
+  .tag{font:var(--t-micro);color:var(--on-surface-subtle);letter-spacing:.06em;}
+  .meta{font:var(--t-caption);color:var(--on-surface-variant);font-variant-numeric:tabular-nums;text-align:right;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="row"><span class="tag">SCORE</span><span class="t-score">28 / 100</span><span class="meta">28 / 700 / 32</span></div>
+    <div class="row"><span class="tag">PANEL</span><span class="h-panel">AI Interview Co-Pilot</span><span class="meta">16 / 600 / 24</span></div>
+    <div class="row"><span class="tag">QUESTION</span><span class="t-question">Describe a time you resolved a conflict within your team.</span><span class="meta">15 / 500 / 22</span></div>
+    <div class="row"><span class="tag">BODY</span><span class="t-body">I think the most challenging conflict I navigated was when…</span><span class="meta">14 / 400 / 20</span></div>
+    <div class="row"><span class="tag">SECTION</span><span class="h-section">Live Transcript</span><span class="meta">13 / 500 / 20</span></div>
+    <div class="row"><span class="tag">CAPTION</span><span class="t-caption">Question 3 of 10</span><span class="meta">12 / 400 / 16</span></div>
+    <div class="row"><span class="tag">MICRO</span><span class="t-micro">SUPPORTED · PDF, DOCX</span><span class="meta">11 / 500 / 14</span></div>
+  </div>
+</body>
+</html>
