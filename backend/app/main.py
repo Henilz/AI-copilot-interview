@@ -2,9 +2,11 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
-from app.database import engine
+from app.database import engine, AsyncSessionLocal
 from app.models import Base
+from app.redis_client import get_redis
 from app.routers import auth, evaluations, interviews, websocket
 
 
@@ -39,4 +41,21 @@ app.include_router(websocket.router, tags=["websocket"])
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    checks = {}
+
+    try:
+        async with AsyncSessionLocal() as session:
+            await session.execute(text("SELECT 1"))
+        checks["database"] = "ok"
+    except Exception as e:
+        checks["database"] = f"error: {e}"
+
+    try:
+        r = get_redis()
+        await r.ping()
+        checks["redis"] = "ok"
+    except Exception as e:
+        checks["redis"] = f"error: {e}"
+
+    all_ok = all(v == "ok" for v in checks.values())
+    return {"status": "ok" if all_ok else "degraded", **checks}
