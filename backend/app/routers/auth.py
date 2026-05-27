@@ -1,11 +1,9 @@
-"""Simple JWT auth — username/password demo endpoint.
-Replace with your real user store / OAuth provider in production.
-"""
+"""Single-interviewer JWT auth. Credentials are read from .env at startup."""
 from datetime import timedelta
+from functools import lru_cache
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi import Depends
 from pydantic import BaseModel
 
 from app.config import settings
@@ -13,11 +11,10 @@ from app.utils.auth import create_access_token, hash_password, verify_password
 
 router = APIRouter()
 
-# Demo in-memory user — replace with DB lookup
-_DEMO_USER = {
-    "username": "interviewer",
-    "hashed_password": hash_password("password123"),
-}
+
+@lru_cache(maxsize=1)
+def _hashed_password() -> str:
+    return hash_password(settings.INTERVIEWER_PASSWORD)
 
 
 class TokenResponse(BaseModel):
@@ -27,9 +24,9 @@ class TokenResponse(BaseModel):
 
 @router.post("/token", response_model=TokenResponse)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    if form_data.username != _DEMO_USER["username"] or not verify_password(
-        form_data.password, _DEMO_USER["hashed_password"]
-    ):
+    username_ok = form_data.username == settings.INTERVIEWER_USERNAME
+    password_ok = verify_password(form_data.password, _hashed_password())
+    if not username_ok or not password_ok:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",

@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
 
+    # Interviewer credentials (single-user mode)
+    INTERVIEWER_USERNAME: str = "interviewer"
+    INTERVIEWER_PASSWORD: str = "password123"
+
     # AWS S3
     AWS_ACCESS_KEY_ID: str = ""
     AWS_SECRET_ACCESS_KEY: str = ""
