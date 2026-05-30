@@ -2,16 +2,25 @@
 import json
 import logging
 
-from openai import AsyncOpenAI
-from tenacity import retry, stop_after_attempt, wait_exponential
+from openai import APIStatusError, AsyncOpenAI, AuthenticationError
+from tenacity import retry, retry_if_exception, stop_after_attempt, wait_exponential
 
 from app.config import settings
 from app.schemas.resume import ParsedResume
+from app.services.llm_config import NVIDIA_LIGHT_MODEL, client_kwargs, model_name
 from app.utils.cost_tracker import CostAccumulator, estimate_tokens
 
 logger = logging.getLogger(__name__)
 
-client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+client = AsyncOpenAI(**client_kwargs())
+
+
+def _is_retryable_openai_error(exc: BaseException) -> bool:
+    if isinstance(exc, AuthenticationError):
+        return False
+    if isinstance(exc, APIStatusError) and 400 <= exc.status_code < 500:
+        return False
+    return True
 
 SYSTEM_PROMPT = """You are an expert resume parser. Extract structured information from the resume text provided.
 
@@ -30,12 +39,16 @@ Return a JSON object with EXACTLY these fields:
 Use null for missing scalar fields and [] for missing arrays. Return only valid JSON, no markdown."""
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
+@retry(
+    retry=retry_if_exception(_is_retryable_openai_error),
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+)
 async def parse_resume(raw_text: str) -> tuple[ParsedResume, CostAccumulator]:
     cost = CostAccumulator()
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=model_name(settings.RESUME_PARSE_MODEL, NVIDIA_LIGHT_MODEL),
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},

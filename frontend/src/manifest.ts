@@ -5,7 +5,7 @@ export default defineManifest({
   name: 'AI Interview Co-Pilot',
   version: '0.1.0',
   description: 'Real-time interview coaching panel for Google Meet',
-  permissions: ['sidePanel', 'storage', 'activeTab', 'tabs'],
+  permissions: ['sidePanel', 'storage', 'activeTab', 'tabs', 'desktopCapture'],
   host_permissions: [
     'https://meet.google.com/*',
   ],

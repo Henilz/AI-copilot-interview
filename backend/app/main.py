@@ -8,6 +8,7 @@ from app.database import engine, AsyncSessionLocal
 from app.models import Base
 from app.redis_client import get_redis
 from app.routers import auth, evaluations, interviews, websocket
+from app.routers import audio, auth, evaluations, interviews, websocket
 
 
 @asynccontextmanager
@@ -37,6 +38,7 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(interviews.router, prefix="/api", tags=["interviews"])
 app.include_router(evaluations.router, prefix="/api", tags=["evaluations"])
 app.include_router(websocket.router, tags=["websocket"])
+app.include_router(audio.router, tags=["audio"])
 
 
 @app.get("/health")

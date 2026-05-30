@@ -6,7 +6,7 @@ import {
   WS_QUEUE_MAX,
 } from '../../shared/constants'
 
-const WS_BASE = import.meta.env.VITE_WS_BASE as string
+const WS_BASE = (import.meta.env.VITE_WS_BASE as string | undefined) || 'ws://localhost:8000'
 
 interface SocketOpts {
   interviewId: string
@@ -35,12 +35,12 @@ export class InterviewSocket {
   }
 
   send(msg: OutboundMessage) {
+    const payload = this._toBackendMessage(msg)
+
     if (this.ws?.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify(msg))
-    } else {
-      if (this.queue.length < WS_QUEUE_MAX) {
-        this.queue.push(msg)
-      }
+      this.ws.send(JSON.stringify(payload))
+    } else if (this.queue.length < WS_QUEUE_MAX) {
+      this.queue.push(msg)
     }
   }
 
@@ -69,9 +69,13 @@ export class InterviewSocket {
     ws.onmessage = (event) => {
       try {
         const msg = JSON.parse(event.data) as InboundMessage
+        if (msg.type === 'ping') {
+          this.send({ type: 'ping' })
+          return
+        }
         this.opts.onMessage(msg)
       } catch {
-        // malformed frame — ignore
+        // malformed frame - ignore
       }
     }
 
@@ -81,7 +85,7 @@ export class InterviewSocket {
 
     ws.onclose = (event) => {
       clearInterval(this.heartbeatTimer)
-      // 4001 / 4003 = auth error — don't reconnect
+      // 4001 / 4003 = auth error - don't reconnect
       if (event.code === 4001 || event.code === 4003) {
         this.wantOpen = false
         this.opts.onStatus('ERROR')
@@ -97,14 +101,14 @@ export class InterviewSocket {
   private _flushQueue() {
     while (this.queue.length > 0) {
       const msg = this.queue.shift()!
-      this.ws?.send(JSON.stringify(msg))
+      this.ws?.send(JSON.stringify(this._toBackendMessage(msg)))
     }
   }
 
   private _startHeartbeat() {
     this.heartbeatTimer = setInterval(() => {
       if (this.ws?.readyState === WebSocket.OPEN) {
-        this.ws.send(JSON.stringify({ type: 'ping' }))
+        this.ws.send(JSON.stringify({ type: 'pong' }))
       }
     }, WS_HEARTBEAT_INTERVAL_MS)
   }
@@ -115,5 +119,28 @@ export class InterviewSocket {
       if (this.wantOpen) this._connect()
     }, this.reconnectDelay)
     this.reconnectDelay = Math.min(this.reconnectDelay * 2, WS_RECONNECT_MAX_MS)
+  }
+
+  private _toBackendMessage(msg: OutboundMessage) {
+    if (msg.type === 'transcript_chunk') {
+      return {
+        type: 'transcript',
+        speaker: 'candidate',
+        text: msg.text,
+        timestamp: new Date(msg.t).toISOString(),
+        is_final: msg.isFinal,
+        question_id: msg.questionId,
+      }
+    }
+
+    if (msg.type === 'question_asked') {
+      return { type: 'question_asked', question_id: msg.questionId }
+    }
+
+    if (msg.type === 'ping') {
+      return { type: 'pong' }
+    }
+
+    return msg
   }
 }

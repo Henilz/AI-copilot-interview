@@ -1,7 +1,24 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(docker --version)",
+      "Bash(docker-compose --version)",
+      "Bash(docker info *)",
+      "Bash(docker-compose up *)",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" http://localhost:8000/health)",
+      "Bash(docker-compose down *)",
+      "Bash(docker-compose exec *)",
+      "Bash(docker-compose -f backend/docker-compose.yml exec -T postgres psql -U user -d interview_copilot -c \"\\\\dt\")",
+      "Bash(docker-compose -f backend/docker-compose.yml ps postgres)",
+      "Bash(docker-compose -f backend/docker-compose.yml exec -T postgres psql -U user -d interview_copilot -c \"SELECT current_database\\(\\), current_user, inet_server_addr\\(\\), inet_server_port\\(\\);\")",
+      "PowerShell(Get-NetTCPConnection -LocalPort 5432 -State Listen -ErrorAction SilentlyContinue | Select-Object LocalAddress, LocalPort, OwningProcess | ForEach-Object { $p = Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue; [PSCustomObject]@{ Address=$_.LocalAddress; Port=$_.LocalPort; PID=$_.OwningProcess; Process=$p.ProcessName } })",
+      "Bash(docker run *)",
+      "Bash(docker-compose -f backend/docker-compose.yml exec -T postgres psql -U user -d interview_copilot -c \"SELECT schemaname, tablename, tableowner FROM pg_tables WHERE schemaname NOT IN \\('pg_catalog','information_schema'\\);\")",
+      "PowerShell(Get-Service -ErrorAction SilentlyContinue | Where-Object { $_.Name -match \"postgres|pgsql|pgbouncer\" } | Format-Table Name, DisplayName, Status -AutoSize; Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match \"postgres|pgsql\" } | Format-Table ProcessName, Id -AutoSize)",
+      "Bash(docker-compose -f backend/docker-compose.yml up -d)",
+      "Bash(docker-compose -f backend/docker-compose.yml restart api celery_worker)",
+      "Bash(git check-ignore *)"
     ]
   }
 }

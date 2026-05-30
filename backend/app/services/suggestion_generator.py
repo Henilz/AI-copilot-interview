@@ -11,11 +11,12 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 from app.config import settings
 from app.redis_client import redis_get, redis_get_int, redis_lrange, redis_llen, redis_set
 from app.schemas.question import SuggestionSet
+from app.services.llm_config import NVIDIA_LIGHT_MODEL, client_kwargs, model_name
 from app.utils.cost_tracker import CostAccumulator
 
 logger = logging.getLogger(__name__)
 
-client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
+client = AsyncOpenAI(**client_kwargs())
 
 SUGGESTION_SYSTEM_PROMPT = """You are an expert interview coach assisting a non-technical interviewer in real-time.
 
@@ -84,7 +85,7 @@ async def stream_suggestions(
 
     full_content = ""
     async with client.chat.completions.stream(
-        model="gpt-4o-mini",
+        model=model_name(settings.SUGGESTION_MODEL, NVIDIA_LIGHT_MODEL),
         messages=[
             {"role": "system", "content": SUGGESTION_SYSTEM_PROMPT},
             {"role": "user", "content": context},
@@ -127,7 +128,7 @@ async def generate_rolling_summary(interview_id: str, exchanges: list[dict]) -> 
     prompt = ROLLING_SUMMARY_PROMPT.format(exchanges=exchanges_text)
 
     response = await client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=model_name(settings.TRANSCRIPT_SUMMARY_MODEL, NVIDIA_LIGHT_MODEL),
         messages=[
             {"role": "user", "content": prompt},
         ],

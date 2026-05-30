@@ -7,12 +7,18 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 
 from app.config import settings
 from app.schemas.evaluation import EvaluationResult
+from app.services.llm_config import (
+    NVIDIA_LIGHT_MODEL,
+    NVIDIA_STRONG_MODEL,
+    client_kwargs,
+    model_name,
+)
 from app.utils.cost_tracker import CostAccumulator, estimate_tokens
 
 logger = logging.getLogger(__name__)
 
 # Sync client for use inside Celery tasks
-sync_client = OpenAI(api_key=settings.OPENAI_API_KEY)
+sync_client = OpenAI(**client_kwargs())
 
 CHUNK_SUMMARY_PROMPT = """You are summarising a portion of a technical interview transcript.
 Extract and preserve the key Q&A pairs, technical depth demonstrated, and any notable strengths or concerns.
@@ -64,7 +70,7 @@ def chunk_text(text: str, max_tokens: int) -> list[str]:
 @retry(stop=stop_after_attempt(2), wait=wait_exponential(multiplier=2, min=5, max=30))
 def summarise_transcript_chunk(chunk: str) -> tuple[str, int, int]:
     response = sync_client.chat.completions.create(
-        model="gpt-4o-mini",
+        model=model_name(settings.TRANSCRIPT_SUMMARY_MODEL, NVIDIA_LIGHT_MODEL),
         messages=[
             {"role": "user", "content": CHUNK_SUMMARY_PROMPT.format(chunk=chunk)},
         ],
@@ -115,7 +121,7 @@ QUESTIONS ASKED DURING INTERVIEW:
 {questions_text}"""
 
     response = sync_client.chat.completions.create(
-        model="gpt-4o",
+        model=model_name(settings.EVALUATION_MODEL, NVIDIA_STRONG_MODEL),
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": EVALUATION_SYSTEM_PROMPT},
