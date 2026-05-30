@@ -1,14 +1,36 @@
 """Evaluation status polling and retrieval."""
+from pathlib import Path
+
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config import settings
 from app.database import get_db
 from app.models.evaluation import Evaluation
 from app.schemas.evaluation import EvaluationResult, EvaluationStatusResponse
 from app.utils.auth import get_current_user
 
 router = APIRouter()
+
+
+@router.get("/evaluations/files/{key:path}")
+async def serve_local_report(key: str):
+    """Serve PDFs written by the local-disk fallback (dev only).
+
+    No auth: the path embeds the interview UUID, which is unguessable. If you
+    deploy to prod, configure AWS_* so S3 presigned URLs are used instead.
+    """
+    base = Path(settings.LOCAL_REPORTS_DIR).resolve()
+    target = (base / key).resolve()
+    try:
+        target.relative_to(base)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if not target.is_file():
+        raise HTTPException(status_code=404, detail="Report not found")
+    return FileResponse(target, media_type="application/pdf", filename=target.name)
 
 
 @router.get("/evaluations/{evaluation_id}/status", response_model=EvaluationStatusResponse)

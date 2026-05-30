@@ -10,10 +10,16 @@ interface StartTabAudioCaptureOpts {
   onStatus?: (status: 'OPEN' | 'CLOSED' | 'ERROR') => void
 }
 
+const CHUNK_MS = 4_000
+
 let stream: MediaStream | undefined
 let recorder: MediaRecorder | undefined
 let socket: WebSocket | undefined
 let currentQuestionId: string | undefined
+let rotateTimer: ReturnType<typeof setInterval> | undefined
+let activeMimeType = 'audio/webm'
+let activeAudioStream: MediaStream | undefined
+let stopping = false
 
 export async function startTabAudioCapture(opts: StartTabAudioCaptureOpts) {
   await stopTabAudioCapture()
@@ -90,19 +96,58 @@ export async function startTabAudioCapture(opts: StartTabAudioCaptureOpts) {
   }
   socket.onclose = () => opts.onStatus?.('CLOSED')
 
-  recorder = new MediaRecorder(audioOnlyStream, { mimeType })
-  recorder.ondataavailable = async (event) => {
-    if (event.data.size === 0 || socket?.readyState !== WebSocket.OPEN) return
-    socket.send(await event.data.arrayBuffer())
+  activeMimeType = mimeType
+  activeAudioStream = audioOnlyStream
+  stopping = false
+  startRecorderCycle()
+
+  rotateTimer = setInterval(() => {
+    if (stopping) return
+    if (recorder && recorder.state === 'recording') {
+      recorder.stop()
+    }
+  }, CHUNK_MS)
+}
+
+function startRecorderCycle() {
+  if (!activeAudioStream) return
+
+  // Each MediaRecorder lifecycle produces ONE self-contained WebM blob with a
+  // valid EBML header. Using start(timeslice) instead would give us headerless
+  // mid-stream chunks that Groq Whisper rejects with 400 "invalid media file".
+  const r = new MediaRecorder(activeAudioStream, { mimeType: activeMimeType })
+  recorder = r
+
+  const chunks: Blob[] = []
+  r.ondataavailable = (event) => {
+    if (event.data.size > 0) chunks.push(event.data)
   }
-  recorder.start(3_000)
+  r.onstop = async () => {
+    if (chunks.length > 0 && socket?.readyState === WebSocket.OPEN) {
+      const blob = new Blob(chunks, { type: activeMimeType })
+      socket.send(await blob.arrayBuffer())
+    }
+    if (!stopping && activeAudioStream?.active) {
+      startRecorderCycle()
+    }
+  }
+
+  r.start()
 }
 
 export async function stopTabAudioCapture() {
+  stopping = true
+
+  if (rotateTimer) {
+    clearInterval(rotateTimer)
+    rotateTimer = undefined
+  }
+
   if (recorder && recorder.state !== 'inactive') {
     recorder.stop()
   }
   recorder = undefined
+  activeAudioStream = undefined
 
   stream?.getTracks().forEach((track) => track.stop())
   stream = undefined
