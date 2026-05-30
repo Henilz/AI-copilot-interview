@@ -27,7 +27,7 @@ No tab audio capture. No virtual audio drivers. Mic-only, ships fast.
 | Styling | Design system CSS (custom properties + component classes) + Tailwind 3 utilities |
 | State | Zustand 4 with `chrome.storage.local` persistence |
 | Extension | Manifest V3, Side Panel API (Chrome 114+) |
-| STT | `webkitSpeechRecognition` (candidate mic only) |
+| STT | Shared Meet tab audio streamed to backend STT |
 | Transport | WebSocket with exponential-backoff reconnect + heartbeat |
 
 ---
@@ -76,12 +76,11 @@ frontend/
 │       ├── hooks/
 │       │   ├── useInterview.ts       # Upload → parse → questions → end flow
 │       │   ├── useWebSocket.ts       # Opens / manages InterviewSocket during IN_PROGRESS
-│       │   ├── useSpeechRecognition.ts # webkitSpeechRecognition wrapper
 │       │   └── usePolling.ts         # Generic abort-safe poll-until helper
 │       └── services/
 │           ├── api.ts                # Typed REST client (JWT from env)
 │           ├── ws.ts                 # InterviewSocket class
-│           ├── transcription.ts      # WebSpeechTranscription class
+│           ├── tabAudio.ts           # Shared-tab audio capture + STT WebSocket
 │           └── storage.ts            # chrome.storage.local helpers
 ├── AI Interview Co-Pilot Design System/  # Source design system (reference only)
 ├── .env.local                        # Local env vars — gitignored

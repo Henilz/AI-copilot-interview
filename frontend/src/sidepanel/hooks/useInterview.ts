@@ -77,11 +77,25 @@ export function useInterview() {
       }
       setPhase('RESUME_READY')
 
+      await prepareQuestions(id)
+    } catch (err) {
+      if ((err as Error).name === 'AbortError') return
+      setPhase('ERROR')
+      setError((err as Error).message)
+    }
+  }
+
+  async function prepareQuestions(id = interviewId) {
+    if (!id) return
+
+    try {
       const qs = await interviews.initialQuestions(id)
+      if (qs.length === 0) {
+        throw new Error('No questions were generated for this resume.')
+      }
       setQuestions(qs)
       setPhase('QUESTIONS_READY')
     } catch (err) {
-      if ((err as Error).name === 'AbortError') return
       setPhase('ERROR')
       setError((err as Error).message)
     }
@@ -160,6 +174,7 @@ export function useInterview() {
 
   return {
     startUpload,
+    prepareQuestions,
     startInterview,
     markQuestionAsked,
     nextQuestion,

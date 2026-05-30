@@ -3,6 +3,8 @@ export interface Question {
   text: string;
   category: string;
   difficulty: 1 | 2 | 3 | 4 | 5;
+  whatToListenFor?: string;
+  redFlags?: string;
 }
 
 export interface ResumeParseResult {
@@ -61,12 +63,22 @@ export type WsStatus = 'IDLE' | 'CONNECTING' | 'OPEN' | 'CLOSING' | 'CLOSED' | '
 export type OutboundMessage =
   | { type: 'transcript_chunk'; text: string; isFinal: boolean; t: number; questionId?: string }
   | { type: 'question_asked'; questionId: string }
+  | { type: 'request_suggestions' }
   | { type: 'ping' };
 
 export type InboundMessage =
   | { type: 'score_update'; questionId: string; score: number; strengths: string[] }
   | { type: 'next_question_suggestion'; question: string }
   | { type: 'live_feedback'; text: string; questionId?: string; score?: number }
+  | { type: 'connected'; interview_id: string; transcript_buffered: number; initial_questions: unknown[] }
+  | { type: 'transcript_ack'; sequence: number }
+  | { type: 'suggestion_start' }
+  | { type: 'suggestion_token'; content: string }
+  | { type: 'suggestion_complete'; suggestions: unknown[] }
+  | { type: 'suggestion_error'; message: string }
+  | { type: 'evaluation_ready'; evaluation_id: string; pdf_url?: string }
+  | { type: 'error'; message: string }
+  | { type: 'ping' }
   | { type: 'pong' };
 
 export interface PollOpts {

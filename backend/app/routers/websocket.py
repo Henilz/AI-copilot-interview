@@ -131,6 +131,10 @@ async def _heartbeat(websocket: WebSocket) -> None:
 
 async def _handle_transcript(interview_id: str, msg: dict, websocket: WebSocket) -> None:
     """Buffer transcript chunk in Redis; archive to Postgres when threshold reached."""
+    if msg.get("is_final") is False:
+        await websocket.send_json({"type": "transcript_ack", "partial": True})
+        return
+
     chunk = {
         "speaker": msg.get("speaker", "unknown"),
         "text": msg.get("text", ""),

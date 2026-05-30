@@ -4,6 +4,7 @@ import logging
 
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, sessionmaker
+from openai import APIStatusError, AuthenticationError
 
 from app.celery_app import celery_app
 from app.config import settings
@@ -15,6 +16,12 @@ logger = logging.getLogger(__name__)
 
 sync_engine = create_engine(settings.SYNC_DATABASE_URL)
 SyncSession = sessionmaker(bind=sync_engine)
+
+
+def _is_permanent_openai_error(exc: Exception) -> bool:
+    if isinstance(exc, AuthenticationError):
+        return True
+    return isinstance(exc, APIStatusError) and 400 <= exc.status_code < 500
 
 
 @celery_app.task(bind=True, max_retries=3, default_retry_delay=5)
@@ -64,6 +71,14 @@ def parse_resume_task(self, resume_id: str, file_bytes: list[int], content_type:
         except Exception as exc:
             logger.exception("Resume parsing failed for %s: %s", resume_id, exc)
             resume.parsing_status = "failed"
-            resume.error_message = str(exc)
+            if isinstance(exc, AuthenticationError):
+                resume.error_message = (
+                    "OpenAI authentication failed. Set a valid OPENAI_API_KEY "
+                    "in backend/.env and restart the API and Celery worker."
+                )
+            else:
+                resume.error_message = str(exc)
             db.commit()
+            if _is_permanent_openai_error(exc):
+                return {"status": "failed", "error": resume.error_message}
             raise self.retry(exc=exc)

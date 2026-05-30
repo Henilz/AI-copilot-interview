@@ -34,6 +34,13 @@ export function QuestionCard({ question, index, total, onRegen, onCopy }: Questi
 
       <p className="q-text">{question.text}</p>
 
+      {question.whatToListenFor && (
+        <div className="q-guidance">
+          <span className="material-symbols-outlined">hearing</span>
+          <span>{question.whatToListenFor}</span>
+        </div>
+      )}
+
       <div className="q-actions">
         <IconButton icon="refresh"       label="Regenerate question" onClick={onRegen} />
         <IconButton icon="content_copy"  label="Copy question"       onClick={handleCopy} />

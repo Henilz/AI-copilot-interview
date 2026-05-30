@@ -40,6 +40,8 @@ async def create_interview(
     )
     db.add(interview)
     await db.flush()
+    await db.commit()
+    await db.refresh(interview)
     return interview
 
 
@@ -104,8 +106,10 @@ async def upload_resume(
         resume_id = resume_row.id
 
     await db.flush()
+    await db.commit()
 
-    # Enqueue parsing via Celery
+    # Enqueue parsing via Celery after the resume row is committed so the worker
+    # and immediate status polls can both see it.
     background_tasks.add_task(
         _enqueue_resume_parse, resume_id, file_bytes, file.content_type
     )
@@ -252,10 +256,11 @@ async def end_interview(
     db.add(evaluation)
     await db.flush()
     evaluation_id = evaluation.id
+    await db.commit()
 
-    # Flush Redis transcript to Postgres in background
+    # The evaluation row must be committed before background jobs or immediate
+    # polling try to read it.
     background_tasks.add_task(_flush_redis_transcript_to_db, interview_id)
-    # Trigger evaluation job
     background_tasks.add_task(_enqueue_evaluation, interview_id, evaluation_id)
 
     return {"interview_id": interview_id, "evaluation_id": evaluation_id, "status": "processing"}

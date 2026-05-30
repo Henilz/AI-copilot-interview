@@ -3,13 +3,15 @@ import { Icon } from './ui/Icon'
 interface AudioToggleProps {
   listening: boolean
   onToggle: () => void
+  disabled?: boolean
 }
 
-export function AudioToggle({ listening, onToggle }: AudioToggleProps) {
+export function AudioToggle({ listening, onToggle, disabled }: AudioToggleProps) {
   return (
     <button
       className={`audio-btn${listening ? ' live' : ''}`}
       onClick={onToggle}
+      disabled={disabled}
       aria-pressed={listening}
       aria-label={listening ? 'Stop listening' : 'Start listening'}
     >

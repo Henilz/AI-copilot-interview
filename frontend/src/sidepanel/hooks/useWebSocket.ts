@@ -1,9 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { InterviewSocket } from '../services/ws'
+import { ensureJwt } from '../services/api'
 import { useStore } from '../../state/store'
 import type { InboundMessage } from '../../shared/types'
-
-const JWT = import.meta.env.VITE_DEV_JWT as string
 
 export function useWebSocket() {
   const socketRef = useRef<InterviewSocket | null>(null)
@@ -38,7 +37,17 @@ export function useWebSocket() {
           addToast('info', msg.text)
         }
         break
+      case 'suggestion_error':
+      case 'error':
+        addToast('err', msg.message)
+        break
       case 'pong':
+      case 'connected':
+      case 'transcript_ack':
+      case 'suggestion_start':
+      case 'suggestion_token':
+      case 'suggestion_complete':
+      case 'evaluation_ready':
         break
     }
   }
@@ -46,19 +55,28 @@ export function useWebSocket() {
   useEffect(() => {
     if (phase !== 'IN_PROGRESS' || !interviewId) return
 
-    const socket = new InterviewSocket({
-      interviewId,
-      jwt: JWT,
-      onMessage: handleInbound,
-      onStatus:  setWsStatus,
+    let cancelled = false
+
+    ensureJwt().then((jwt) => {
+      if (cancelled) return
+
+      const socket = new InterviewSocket({
+        interviewId,
+        jwt,
+        onMessage: handleInbound,
+        onStatus:  setWsStatus,
+      })
+
+      socket.open()
+      socketRef.current = socket
+      setSendWs((msg) => socket.send(msg))
+    }).catch((err) => {
+      addToast('err', (err as Error).message)
     })
 
-    socket.open()
-    socketRef.current = socket
-    setSendWs((msg) => socket.send(msg))
-
     return () => {
-      socket.close()
+      cancelled = true
+      socketRef.current?.close()
       socketRef.current = null
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

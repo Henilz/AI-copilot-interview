@@ -1,54 +1,80 @@
-# Python
+# ---- Secrets / environment ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Python ----
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-.Python
-*.egg
+*$py.class
 *.egg-info/
-dist/
+*.egg
+.eggs/
+.Python
 build/
-eggs/
-parts/
-var/
-sdist/
+dist/
 develop-eggs/
 .installed.cfg
-lib/
-lib64/
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Virtual environments
+# Virtualenvs
 venv/
 .venv/
 env/
-.env/
 ENV/
 
-# Environment files
-.env
-.env.local
-.env*.local
+# Test / lint caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
 
-# Alembic
-backend/alembic/versions/*.py
-!backend/alembic/versions/.gitkeep
+# Jupyter
+.ipynb_checkpoints/
 
-# IDE
+# ---- Node / Frontend ----
+node_modules/
+.next/
+.nuxt/
+.turbo/
+.parcel-cache/
+.cache/
+.vite/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vite/Vue/React build output (keep root /dist for Python ignored above; covered)
+frontend/dist/
+frontend/build/
+frontend/.next/
+
+# ---- Editors / IDEs ----
 .vscode/
+!.vscode/extensions.json
 .idea/
-*.suo
-*.user
+*.swp
+*.swo
+*~
 
-# OS
+# ---- OS junk ----
 .DS_Store
 Thumbs.db
+desktop.ini
+ehthumbs.db
 
-# Node / Frontend
-node_modules/
-dist-zip/
-*.zip
+# ---- Claude Code ----
+.claude/settings.local.json
 
-# Logs
-*.log
-celerybeat-schedule
-celerybeat.pid
+# ---- Docker / runtime artifacts ----
+*.pid
+*.seed

@@ -11,6 +11,15 @@ class Settings(BaseSettings):
 
     # OpenAI
     OPENAI_API_KEY: str = ""
+    OPENAI_BASE_URL: str = ""
+    RESUME_PARSE_MODEL: str = "gpt-4o-mini"
+    QUESTION_GENERATION_MODEL: str = "gpt-4o-mini"
+    SUGGESTION_MODEL: str = "gpt-4o-mini"
+    TRANSCRIPT_SUMMARY_MODEL: str = "gpt-4o-mini"
+    EVALUATION_MODEL: str = "gpt-4o"
+    STT_API_KEY: str = ""
+    STT_BASE_URL: str = ""
+    STT_MODEL: str = "whisper-1"
 
     # JWT
     SECRET_KEY: str = "change-me-in-production"

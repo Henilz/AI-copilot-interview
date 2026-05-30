@@ -365,6 +365,21 @@ html, body, #root {
 .q-counter { font: var(--t-caption); color: var(--on-surface-variant); }
 .q-badge { font: 500 11px var(--font-sans); padding: 3px 10px; border-radius: var(--r-chip); }
 .q-text  { font: var(--t-question); color: var(--on-surface); margin: 8px 0 8px; text-wrap: pretty; }
+.q-guidance {
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  margin: 0 0 8px;
+  border-radius: var(--r-input);
+  background: var(--surface-variant);
+  color: var(--on-surface-variant);
+  font: 12px/16px var(--font-sans);
+}
+.q-guidance .material-symbols-outlined {
+  flex: 0 0 auto;
+  font-size: 16px;
+  color: var(--primary);
+}
 .q-actions { display: flex; gap: 2px; margin-left: -6px; }
 
 @keyframes fade-in {
@@ -412,6 +427,11 @@ html, body, #root {
 }
 
 .audio-btn .material-symbols-outlined { font-size: 18px; color: var(--on-surface-variant); }
+
+.audio-btn:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
 
 .audio-btn.live {
   background: var(--error-light);

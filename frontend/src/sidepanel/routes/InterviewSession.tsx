@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useStore } from '../../state/store'
 import { useInterview, useSessionTimer } from '../hooks/useInterview'
 import { useWebSocket } from '../hooks/useWebSocket'
-import { useSpeechRecognition } from '../hooks/useSpeechRecognition'
 import { Header } from '../components/Header'
 import { DifficultyBar } from '../components/DifficultyBar'
 import { QuestionCard } from '../components/QuestionCard'
@@ -11,6 +10,7 @@ import { LiveTranscript } from '../components/LiveTranscript'
 import { ScoreMeter } from '../components/ScoreMeter'
 import { Button } from '../components/ui/Button'
 import { ToastStack } from '../components/ui/Toast'
+import { startTabAudioCapture, stopTabAudioCapture, updateTabAudioQuestion } from '../services/tabAudio'
 
 function SkeletonCard() {
   return (
@@ -32,7 +32,6 @@ function SkeletonCard() {
 
 export function InterviewSession() {
   const [listening, setListening] = useState(false)
-  const { start: startMic, stop: stopMic } = useSpeechRecognition()
 
   // Wire WebSocket and session timer
   useWebSocket()
@@ -45,6 +44,7 @@ export function InterviewSession() {
     markQuestionAsked,
     nextQuestion,
     endInterview,
+    interviewId,
   } = useInterview()
 
   const phase       = useStore((s) => s.phase)
@@ -52,6 +52,10 @@ export function InterviewSession() {
   const transcript  = useStore((s) => s.transcript)
   const partial     = useStore((s) => s.partialTranscript)
   const liveFeedback = useStore((s) => s.liveFeedback)
+  const wsStatus    = useStore((s) => s.wsStatus)
+  const addToast    = useStore((s) => s.addToast)
+  const setPartial  = useStore((s) => s.setPartialTranscript)
+  const addFinal    = useStore((s) => s.addFinalTranscript)
 
   const currentQuestion = questions[currentQuestionIndex]
   const isBetween = phase === 'BETWEEN_QUESTIONS'
@@ -68,21 +72,58 @@ export function InterviewSession() {
 
   async function toggleListening() {
     if (listening) {
-      stopMic()
+      await stopTabAudioCapture()
+      setPartial('')
       setListening(false)
     } else {
-      await startMic()
-      setListening(true)
+      if (wsStatus !== 'OPEN') {
+        addToast('info', 'Connecting to the interview session. Try listening again in a moment.')
+        return
+      }
+      if (!interviewId) return
+
+      try {
+        await startTabAudioCapture({
+          interviewId,
+          questionId: currentQuestion?.id,
+          onTranscript: (text, questionId) => {
+            addFinal({
+              id: crypto.randomUUID(),
+              text,
+              isFinal: true,
+              timestamp: Date.now(),
+              questionId: questionId ?? currentQuestion?.id,
+            })
+            setPartial('')
+          },
+          onError: (message) => addToast('err', message),
+          onStatus: (status) => {
+            if (status === 'CLOSED' || status === 'ERROR') {
+              setListening(false)
+            }
+          },
+        })
+        setListening(true)
+        addToast('ok', 'Capturing shared tab audio.')
+      } catch (err) {
+        addToast('err', (err as Error).message)
+      }
     }
   }
 
-  // Stop mic when leaving IN_PROGRESS
   useEffect(() => {
     if (phase !== 'IN_PROGRESS') {
-      stopMic()
+      stopTabAudioCapture()
       setListening(false)
+      setPartial('')
     }
-  }, [phase, stopMic])
+  }, [phase, setPartial])
+
+  useEffect(() => {
+    if (listening) {
+      updateTabAudioQuestion(currentQuestion?.id)
+    }
+  }, [currentQuestion?.id, listening])
 
   return (
     <div className="panel">
@@ -165,7 +206,10 @@ export function InterviewSession() {
 
         {/* Audio toggle */}
         {!isBetween && !isEnding && (
-          <AudioToggle listening={listening} onToggle={toggleListening} />
+          <AudioToggle
+            listening={listening}
+            onToggle={toggleListening}
+          />
         )}
 
         {/* Transcript */}

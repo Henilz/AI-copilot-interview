@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useStore } from '../../state/store'
 import { useInterview } from '../hooks/useInterview'
 import { Header } from '../components/Header'
@@ -6,8 +7,9 @@ import { ResumeCard } from '../components/ResumeCard'
 import { Button } from '../components/ui/Button'
 
 export function ResumeUpload() {
-  const { startUpload, startInterview } = useInterview()
+  const { startUpload, prepareQuestions, startInterview } = useInterview()
   const phase         = useStore((s) => s.phase)
+  const interviewId   = useStore((s) => s.interviewId)
   const questionCount = useStore((s) => s.questions.length)
   const resumeName    = useStore((s) => s.resumeName)
   const resumeSummary = useStore((s) => s.resumeSummary)
@@ -18,8 +20,19 @@ export function ResumeUpload() {
   const isReady          = phase === 'RESUME_READY'
   const isQuestionsReady = phase === 'QUESTIONS_READY'
   const isError          = phase === 'ERROR'
+  const isGeneratingQuestions = isReady && questionCount === 0
 
   const uploadState: UploadState = isParsing ? 'uploading' : 'idle'
+  const preparingRef = useRef(false)
+
+  useEffect(() => {
+    if (!isReady || !interviewId || questionCount > 0 || preparingRef.current) return
+
+    preparingRef.current = true
+    prepareQuestions(interviewId).finally(() => {
+      preparingRef.current = false
+    })
+  }, [interviewId, isReady, prepareQuestions, questionCount])
 
   // The extension is only enabled on meet.google.com (manifest enforces it),
   // so if the panel is open the user is already on Meet. Always show active.
@@ -74,6 +87,8 @@ export function ResumeUpload() {
           >
             {isQuestionsReady
               ? `Start Interview (${questionCount} questions)`
+              : isGeneratingQuestions
+                ? 'Generating Questions...'
               : 'Start Interview'}
           </Button>
         </div>
