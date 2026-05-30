@@ -17,9 +17,9 @@ class Settings(BaseSettings):
     SUGGESTION_MODEL: str = "gpt-4o-mini"
     TRANSCRIPT_SUMMARY_MODEL: str = "gpt-4o-mini"
     EVALUATION_MODEL: str = "gpt-4o"
-    STT_API_KEY: str = ""
-    STT_BASE_URL: str = ""
-    STT_MODEL: str = "whisper-1"
+    # Groq Whisper for tab-audio transcription
+    GROQ_API_KEY: str = ""
+    GROQ_WHISPER_MODEL: str = "whisper-large-v3-turbo"
 
     # JWT
     SECRET_KEY: str = "change-me-in-production"
@@ -35,6 +35,10 @@ class Settings(BaseSettings):
     AWS_SECRET_ACCESS_KEY: str = ""
     AWS_BUCKET_NAME: str = "interview-copilot-reports"
     AWS_REGION: str = "us-east-1"
+
+    # Local fallback for evaluation PDFs when AWS keys are empty (dev only).
+    LOCAL_REPORTS_DIR: str = "/app/data/reports"
+    API_PUBLIC_URL: str = "http://localhost:8000"
 
     # File limits
     MAX_FILE_SIZE_MB: int = 5
@@ -59,6 +63,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        extra = "ignore"
 
 
 settings = Settings()

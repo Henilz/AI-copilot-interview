@@ -15,7 +15,7 @@ from app.models.resume import Resume
 from app.models.transcript import Transcript
 from app.services.evaluation_generator import run_final_evaluation
 from app.services.pdf_generator import generate_pdf_bytes
-from app.services.s3_service import generate_presigned_url, upload_pdf
+from app.services.s3_service import store_pdf_report
 
 logger = logging.getLogger(__name__)
 
@@ -83,10 +83,9 @@ def generate_evaluation_task(self, interview_id: str, evaluation_id: str) -> dic
             }
             pdf_bytes = generate_pdf_bytes(result.model_dump(), interview_data)
 
-            # ---- Upload to S3 ----
+            # ---- Persist report (S3 if configured, local disk otherwise) ----
             s3_key = f"evaluations/{interview_id}/report.pdf"
-            upload_pdf(pdf_bytes, s3_key)
-            pdf_url = generate_presigned_url(s3_key, expiry_seconds=86400)
+            pdf_url = store_pdf_report(pdf_bytes, s3_key)
 
             # ---- Persist evaluation ----
             evaluation.structured_json = result.model_dump()
